@@ -1,4 +1,5 @@
 require "pry"
+
  def game_hash
 
   game_hash = {home: {
@@ -118,16 +119,28 @@ def num_points_scored(players_name)
   game_hash.each do |place, team|
     team.each do | attribute, data|
     if attribute == :players
-      data.each do |player|
-        if player[:player_name] == players_name
-          return player[:points]
+      data.each do |player, stats|
+        if player == players_name
+          binding.pry
+          return stats[:points] 
         end
+       
+        
+end
+end
 end
 end
 end
 
-end
-end
+# def num_points_scored (player)
+#   if game_hash[:home][:players][player]
+#     game_hash[:home][:players][player][:points]
+#   else
+#     game_hash[:away][:players][player][:points]
+    
+#   end
+# end
+
 def team_colors(name_of_team)
   game_hash.each do |team, chars|
     game_hash[team].each do |name, chars|
@@ -146,25 +159,23 @@ def team_names
   return teams
 end
 
-def players_numbers(name_of_team)
-
-  numbers = []
-  game_hash.each do |team, chars|
-    if name_of_team == game_hash[team][:team_name]
-      game_hash[team][:players].each do |name, stats|
-        numbers.push(stats[:number])
+def players_numbers(team_name)
+  game_hash.map do |attributes, data|
+    if attributes ==:players
+      data.each do |player|
+       return player[:number]
       end
     end
   end
-  return numbers
-  
 end
+
+    
 
 def big_shoe_rebounds
   names = []
   shoe_sizes = []
 
-  game_hash.each do |team, chars|
+  game_hash.each do |team, data|
     game_hash[team][:players].each do |name,stats|
       names.push(name)
       shoe_sizes.push(stats[:shoe])
@@ -181,9 +192,9 @@ def big_shoe_rebounds
   player_with_largest = names[shoe_sizes.index(largest)]
   
   game_hash.each do |team, chars|
-    game_hash[team][:players].each do |name, stats|
+    game_hash[team][:players].each do |name, data|
      if player_with_largest == name
-       return stats[:rebounds]
+       return data[:rebounds]
   
       end
     end
@@ -191,5 +202,3 @@ def big_shoe_rebounds
 end
 
 big_shoe_rebounds
-
-
